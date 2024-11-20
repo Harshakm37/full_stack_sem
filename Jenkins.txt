@@ -4,17 +4,27 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Clone the Git repository
-                git url: 'https://github.com/Harshakm37/full_stack_sem.git', branch: 'main' // Update with your repo URL and branch
+                git url: 'https://github.com/Harshakm37/full_stack_sem.git', branch: 'main'
+            }
+        }
+
+        stage('Prepare Environment') {
+            steps {
+                script {
+                    // Ensure the target directory exists
+                    bat 'mkdir K:\\Java'
+                    // Copy the file from the repository
+                    bat 'copy /Y Fibo.java K:\\Java'
+                }
             }
         }
 
         stage('Compile') {
             steps {
                 script {
-                    // Change directory and compile the Java file
+                    // Compile the Java file
                     bat '''
-                        javac K:/Java/Fibo.java -d K:/Java
+                        javac K:\\Java\\Fibo.java -d K:\\Java
                     '''
                 }
             }
@@ -25,7 +35,7 @@ pipeline {
                 script {
                     // Run the compiled Java program
                     bat '''
-                        java -cp K:/Java Fibo
+                        java -cp K:\\Java Fibo
                     '''
                 }
             }
@@ -44,3 +54,4 @@ pipeline {
         }
     }
 }
+
